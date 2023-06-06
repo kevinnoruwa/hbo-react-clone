@@ -1,0 +1,17 @@
+
+@use 'reset';
+@use 'login';
+@use 'create-user';
+@use 'header';
+@use 'sidenav';
+@use 'featuredmedia';
+@use 'castinfo';
+@use 'account';
+@use 'searchmodal';
+@use 'mediarow';
+
+
+
+h1 {
+    font-size: 3rem;
+}

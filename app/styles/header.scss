@@ -1,0 +1,53 @@
+.top-header{
+    background: rgba(0,0,0,0);
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 50px;
+    position: fixed;
+    top: 0;
+    left:0;
+    width: 100%;
+    z-index: 10;
+    transition: background .3s ease-in-out;
+    &:hover{
+        background: rgba(0,0,0,1);
+    }
+    &_logo {
+        cursor: pointer;
+        background-size: 100% 100%;
+        color: #fff;
+        height: 22px;
+        width: 129px;
+        background-image:  url("/images/logo.svg");
+        transform: scale(.9)
+    }
+    &_left-side {
+        display: flex;
+        div:nth-child(1){
+            margin: 0 40px 0 0;
+            cursor: pointer;
+        }
+    }
+
+    &_search-btn{
+        cursor: pointer;
+    }
+
+    &_account{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    &_user-img{
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        border: 3px solid rgb(132,0,255);
+        margin: 0 1rem 0 0;
+    }
+}
+
