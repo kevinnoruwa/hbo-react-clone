@@ -1,0 +1,45 @@
+.genre-nav {
+    display: flex;
+    margin: 80px 0 0 0;
+    padding: 0 50px 0 50px;
+    justify-content: space-between;
+    overflow-x: scroll;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    li {
+        transition: all .3s ease-in-out;
+        opacity: 0;
+        transform: translate3d(0,50px,0);
+    }
+    @for $i from 0 through 20 {
+        &-active li:nth-child(#{$i + 1}){
+            opacity: 1;
+            transition-delay: 0.10s * $i;
+            transform: translate3d(0,0,0);
+        }
+    }
+
+    a {
+        color: #fff;
+        font-size: 1.1rem;
+        display: block;
+        padding: 10px;
+        text-decoration: none;
+        margin: 0 10px 0 0;
+        position: relative;
+        transition: all .2s ease-in-out;
+        &.active, &:hover{
+            background: linear-gradient(
+                320deg,
+                #5e9eff 0%,
+                #771e87 100%,
+                #3c26b8 100%,
+                black 100%
+            );
+            color: #fff;
+            transform: scale(1.3);
+        }
+    }
+
+}

@@ -9,9 +9,15 @@
 @use 'account';
 @use 'searchmodal';
 @use 'mediarow';
+@use 'genrenav';
 
 
 
 h1 {
     font-size: 3rem;
+}
+
+
+.hide-comp {
+    display: none;
 }

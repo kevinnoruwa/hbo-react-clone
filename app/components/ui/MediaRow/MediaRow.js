@@ -1,18 +1,35 @@
-import React from 'react'
-
-
+import React from "react";
+import axios from "axios";
+import { shuffleArray } from "../../utilities/utilities";
+import Link from "next/link";
 export default function MediaRow(props) {
-  const [loadingData, setLoadingData] = React.useState(true)
+  const [loadingData, setLoadingData] = React.useState(true);
+  const [movies, setMovies] = React.useState([]);
+  React.useEffect(() => {
+    axios
+      .get(
+        `https://api.themoviedb.org/3/${props.endpoint}&api_key=${process.env.NEXT_PUBLIC_API_KEY}`
+      )
+      .then((res) => {
+        setMovies(shuffleArray(res.data.results));
+        setLoadingData(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
-  const showThumbnails = () => {
-    setTimeout(() => setLoadingData(false), 6000)
-    return loadingData ? loopComp(<Skeleton/>, 10) : loopComp(<Thumbnail/>, 10)
-
+  function showThumbnails() {
+    return loadingData
+      ? loopComp(<Skeleton />, movies.length)
+      : movies.map((movie) => {
+          return <Thumbnail key={movie.id} mediaType={props.mediaType}   movieData={movie}  />;
+        });
   }
-  let i;
+
   function loopComp(comp, digit) {
     let thumbnails = [];
-    for (i = 0; i < digit; i++) {
+    for (let i = 0; i < digit; i++) {
       thumbnails.push(comp);
     }
 
@@ -27,16 +44,31 @@ export default function MediaRow(props) {
   );
 }
 
-const Thumbnail = () => {
+const Thumbnail = (props) => {
+  let m;
+  if(props.mediaType === undefined){
+    m = 'movie'
+  } else if(props.mediaType === 'movie'){
+    m = 'movie'
+  } else if(props.mediaType === 'tv') {
+    m = 'tv'
+  }
+  
   return (
-    <div className="media-row_thumbnail">
-      <img src="https://c4.wallpaperflare.com/wallpaper/675/275/718/joker-2019-movie-joker-joaquin-phoenix-actor-men-hd-wallpaper-preview.jpg" />
-      <div className="media-row_top-layer">
-        <i className="fas fa-play" />
+    <Link href={`/${m}/${props.movieData.id}`}>
+      <div className="media-row_thumbnail">
+       {props.movieData.poster_path === null? <img src="https://images.unsplash.com/photo-1554050857-c84a8abdb5e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8fA%3D%3D&w=1000&q=80"/> : <img
+          src={`https://image.tmdb.org/t/p/w500/${props.movieData.poster_path}`}
+        />}
+        <div className="media-row_top-layer">
+          <i className="fas fa-play" />
+        </div>
       </div>
-    </div>
+    </Link>
   );
 };
+
+
 
 const Skeleton = () => {
   return (
@@ -45,3 +77,8 @@ const Skeleton = () => {
     </div>
   );
 };
+
+
+
+
+

@@ -1,38 +1,67 @@
-
 import { useStateContext } from "../../Context/HboProvider";
+import { useRouter } from "next/navigation";
+import React from "react";
+import ls from 'local-storage'
 export default function Account() {
-    const globalState = useStateContext()
-  const loopComp = (comp, digit) => {
-    let thumbnail = [];
-    for (let i = 0; i < digit; i++) {
-      thumbnail.push(comp);
-    }
+  
 
-    return thumbnail;
+  const globalState = useStateContext();
+
+  
+  const router = useRouter();
+  React.useEffect(() => {
+    if (globalState.accountModalOpen) {
+      document.body.style.overflowY = "hidden";
+    } else {
+      document.body.style.overflowY = "auto";
+    }
+  }, [globalState.accountModalOpen]);
+  const showWatchList = () => {
+    return globalState.watchList.map((item, i) => {
+      return (
+        <div key={i} className="account_watch-video">
+          <img src={`${item.mediaUrl}`} />
+          <div className="account_watch-overlay">
+            <div className="account_watch-buttons">
+              <div
+                className="account_watch-circle"
+                onClick={() => watchMedia(`${item.mediaType}/${item.mediaId}`)}
+              >
+                <i className="fas fa-play" />
+              </div>
+              <div
+                className="account_watch-circle"
+                onClick={() => globalState.removeFromList(item.mediaId)}
+              >
+                <i className="fas fa-times" />
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    });
   };
+
+  const watchMedia = (url) => {
+    router.push(url);
+    globalState.setAccountModalOpenAction()
+    
+
+  };
+
+  const signOut = () => {
+    ls.remove('users')
+    ls.remove('activeUID')
+    ls.remove('ally-supports-cache')
+    router.push("/")
+  }
   return (
-    <div className={`account ${globalState.accountModalOpen && "account_active" }`}>
+    <div
+      className={`account ${globalState.accountModalOpen && "account_active"}`}
+    >
       <div className="account_details">
         <div className="account_title">My List</div>
-        <div className="account_watch-list">
-          {loopComp(
-            <div className="account_watch-video">
-              <img src="https://media.comicbook.com/2017/10/avengers-2-movie-poster-marvel-cinematic-universe-1038898.jpg" />
-              <div className="account_watch-overlay">
-                <div className="account_watch-buttons">
-                  <div className="account_watch-circle">
-                    <i className="fas fa-play" />
-                 
-                  </div>
-                  <div className="account_watch-circle">
-                    <i className="fas fa-times" />
-                  </div>
-                </div>
-              </div>
-            </div>,
-            6
-          )}
-        </div>
+        <div className="account_watch-list">{globalState.watchList.length === 0 ? 'nothing added to list' : showWatchList()}</div>
       </div>
       <div className="account_menu">
         <ul className="account_main">
@@ -48,7 +77,7 @@ export default function Account() {
             <a href="/">Account</a>
           </li>
           <li>
-            <a href="/">Sign Out</a>
+            <a href="/" onClick={signOut} >Sign Out</a>
           </li>
         </ul>
       </div>

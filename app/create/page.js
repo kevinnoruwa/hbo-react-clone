@@ -10,7 +10,6 @@ import { useRouter } from 'next/navigation';
 export default function CreateUser() {
    const globalState = useStateContext()
    const Router = useRouter()
-
    const saveUser = () => {
      let users = []
      let  user;
@@ -61,7 +60,7 @@ export default function CreateUser() {
             <img  onClick={globalState.changeImg} src={globalState.userImg} className="create-user_user-img"/>
             <div className="create-user_input-group">
               <label>Name</label>
-              <input value={globalState.userName} onChange={globalState.CreateUserFunc} type="text" className="create-user_inputText"/>
+              <input value={globalState.user} onChange={globalState.CreateUserFunc} type="text" className="create-user_inputText"/>
               <div className="create-user_colors">
                 <div style={{
                   background: 'rgb(2,27,64)',
